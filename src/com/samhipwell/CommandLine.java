@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by sam on 23/02/15.
  */
-public class Game {
+public class CommandLine implements Games{
     private static final int NUMBER_OF_PINS = 10;
 
     private ArrayList<Bowler> bowler;
@@ -98,7 +98,7 @@ public class Game {
         this.printResults();
     }
 
-    private void printResults() {
+    public void printResults() {
         if(this.bowler != null){
             System.out.println("This is your results:");
             for(int u =0; u<this.bowler.size(); u++){

@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class GameTest {
+public class CommandLineTest {
 
     @Test
     public void testSetup() throws Exception {
