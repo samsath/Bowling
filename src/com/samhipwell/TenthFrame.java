@@ -2,16 +2,15 @@ package com.samhipwell;
 
 import java.util.ArrayList;
 
-/**
- * Created by sam on 22/02/15.
- */
+
 public class TenthFrame implements Frame {
+    /*
+     * This is the class for the Last frame.
+     */
+    private ArrayList<Balls> balls; // List of balls per frame
+    private int extraPoints = 0; // The amount of extra points added.
 
-    private ArrayList<Balls> balls;
-    private int frameIndex = 0;
-    private int extraPoints = 0;
-
-    private int numberPins = 0;
+    private int numberPins = 0; // number of pins left.
 
     public TenthFrame(int numberPins) {
         this.numberPins = numberPins;
@@ -20,6 +19,10 @@ public class TenthFrame implements Frame {
 
     @Override
     public int score() {
+        /*
+         * This function goes through each ball in the list and gets te pin count then adds the extraPoints to the pins
+         *  to return the total points for this frame.
+         */
         if(this.balls == null){
             return 0;
         }
@@ -33,44 +36,66 @@ public class TenthFrame implements Frame {
 
     @Override
     public int addBall(Balls ball) {
+        /*
+         * Adds the ball to the list, if there isn't any balls there yet then if initiated the list.
+         */
         if(balls == null){
             this.balls = new ArrayList<Balls>();
         }
         this.balls.add(ball);
-        this.frameIndex++;
 
         return ball.getPins();
     }
 
     @Override
     public boolean rollAgain() {
+        /*
+         * This function check if the player can roll again so if there is no more than 3 balls and if the first two balls
+         *  are more than the numberPins they can roll again.
+         */
         if(this.balls == null){
             return true;
         }
         if(this.balls.size() <= 1){
             return true;
         }
+        if(this.balls.size() == 3){
+            return false;
+        }
         return this.score() >= numberPins;
     }
 
     @Override
     public boolean isStrike() {
+        /*
+         * Checks if this frame is a strike be a quick return statment.
+         */
         return this.balls.size() == 1 && this.balls.get(0).getPins() == numberPins;
     }
 
     @Override
     public boolean isSpare() {
+        /*
+         * Checks if this frame is a spare be a quick return statment.
+         */
         return this.balls.size() == 2 && this.score() == numberPins;
     }
 
 
     @Override
     public int addBonus(int value){
-        return 0;
+        /*
+         * As the interface needs to have a addBounse function but this function is not needed to add extra points, the
+         * function just returns the current score.
+         */
+        return this.score();
     }
 
     @Override
     public int getBall(int ball) {
+         /*
+         * Returns the ball value if there is a ball of that type else it returns a unusable number to the other function.
+         */
         if(this.balls.size() >= ball) {
             return this.balls.get(ball).getPins();
         }else{

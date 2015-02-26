@@ -84,6 +84,10 @@ public class CommandLine implements Games{
     }
 
     public void play() {
+        /*
+         * This function check if there are bowlers if not setup will start. Then it goes through the who the bowlers are.
+         * Then runs the actual scoring process, then once that is done the program prints the score.
+         */
         if(this.bowler == null) {
             System.out.println("No bowlers added");
             this.setup();
@@ -100,6 +104,9 @@ public class CommandLine implements Games{
     }
 
     public void printResults() {
+        /*
+         * Program goes through all the bowlers and prints out their score.
+         */
         if(this.bowler != null){
             System.out.println("This is your results:");
             for(int u =0; u<this.bowler.size(); u++){
@@ -112,6 +119,10 @@ public class CommandLine implements Games{
 
 
     private void turnPlay() {
+        /*
+         * This is the main function which goes through each bowler and asks the user to input the ball score,
+         * check if it is values. Then will preform the extra points calculation for each bowler.
+         */
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         for(int frame = 0; frame < numberOfGames;frame++){
             System.out.println("Round :"+frame);
