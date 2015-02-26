@@ -34,7 +34,7 @@ public class NormalFrame implements Frame {
         if(this.balls == null){
             this.balls = new ArrayList<Balls>();
         }
-        if(this.score() >= 10){
+        if(this.score() >= numberPins){
             return 0;
         }else {
             this.balls.add(ball);
@@ -56,31 +56,27 @@ public class NormalFrame implements Frame {
 
     @Override
     public boolean isStrike() {
-        if(this.balls.size() == 1 && this.balls.get(0).getPins() == numberPins) {
-            return true;
-        }
-        return false;
+        return this.balls.size() == 1 && this.score() == numberPins;
     }
 
     @Override
     public boolean isSpare() {
-        if(this.isStrike()){
-            return false;
-        }
-        if(this.balls.size() == 2) {
-            int ballone = this.balls.get(0).getPins();
-            int balltwo = this.balls.get(1).getPins();
-            int balls = ballone + balltwo;
-            if(balls == 10){
-                return true;
-            }
-        }
-        return false;
+        return this.balls.size() == 2 && this.score() == numberPins;
     }
 
 
     @Override
     public int addBonus(int value){
+        this.extraPoints = value;
         return this.score();
+    }
+
+    @Override
+    public int getBall(int ball) {
+        if(this.balls.size() >= ball+1) {
+            return this.balls.get(ball).getPins();
+        }else{
+            return -1;
+        }
     }
 }

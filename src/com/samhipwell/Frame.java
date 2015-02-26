@@ -10,4 +10,5 @@ public interface Frame {
     boolean isStrike();
     boolean isSpare();
     int addBonus(int value);
+    int getBall(int ball);
 }

@@ -5,43 +5,47 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-/**
- * Created by sam on 23/02/15.
+/*
+ * This is the command line user interface implementation for the game.
  */
 public class CommandLine implements Games{
-    private static final int NUMBER_OF_PINS = 10;
+    private static final int NUMBER_OF_PINS = 10; // maximum amount of pins in specification
+    private static final int MAXIMUM_AMOUNT_OF_PLAYERS = 6; // maximum amount of players in specification
 
-    private ArrayList<Bowler> bowler;
+    private int numberOfGames = 0;
 
-    private int numberOfGames = 0; //10
+    private ArrayList<Player> bowler;
+
+
 
 
     public boolean setup(){
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         /*
-         * This while loop will be deleted
+         * This while loop is to set how many frames the players want to play.
+         * This process goes through a loop asking the user for a number, if the number isn't inputted then they get
+         * asked again. Can be skipped if the numberOfGames is pre set to a number;
          */
         while(numberOfGames == 0){
             System.out.print("How many games do you want:");
             String numGames = null;
-
             try{
                 numGames = br.readLine();
+                int games = Integer.parseInt(numGames);
+                this.numberOfGames = games;
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("IO error can't reading your response");
-            }
-            try {
-                int games = Integer.parseInt(numGames);
-                this.numberOfGames = games;
             }catch(NumberFormatException e){
                 System.out.println("This is not a number please only type a number (1-10).");
             }
-
         }
 
-        boolean agian = true;
+        /*
+         * This is the loop to add bowlers to the game so it keeps asking them for there name and if they want to
+         * continue adding more people till the fixed number of players. Each time it checks the user's input to see if
+         * they have inputted a valued entry.
+         */
         do {
             System.out.println("Do you want to add new bowler y or n");
 
@@ -52,18 +56,17 @@ public class CommandLine implements Games{
                 e.printStackTrace();
                 System.out.println("IO error in reading your response");
             }
-
             assert answer != null;
             if (answer.matches("y") || answer.matches("Y")){
                 if(this.bowler == null) {
-                    this.bowler = new ArrayList<Bowler>();
+                    this.bowler = new ArrayList<Player>();
                 }
                 System.out.print("Please type in your Name:");
                 String userName = null;
                 try{
                     userName = br.readLine();
                     this.bowler.add(new Bowler(userName, this.numberOfGames));
-                    if(this.bowler.size() == 6){
+                    if(this.bowler.size() == MAXIMUM_AMOUNT_OF_PLAYERS){
                         System.out.println("You have reached the maximum of 6 players");
                         return true;
                     }
@@ -71,15 +74,13 @@ public class CommandLine implements Games{
                     e.printStackTrace();
                     System.out.println("IO error can't reading your response");
                 }
-
             } else if(answer.matches("n") || answer.matches("N")){
                 return true;
             }else{
                 System.out.println("Could not understand input please just type y or n");
             }
 
-        }while(agian);
-        return true;
+        }while(true);
     }
 
     public void play() {
@@ -112,7 +113,7 @@ public class CommandLine implements Games{
 
     private void turnPlay() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        for(int frame = 0; frame<numberOfGames;frame++){
+        for(int frame = 0; frame < numberOfGames;frame++){
             System.out.println("Round :"+frame);
             for(int u = 0; u<this.bowler.size(); u++){
                 System.out.println(this.bowler.get(u).getName()+" Your Up");
@@ -143,7 +144,7 @@ public class CommandLine implements Games{
                             currentFrame.addBall(through);
                     }
                 }while(currentFrame.rollAgain());
-
+                this.bowler.get(u).checkPoints();
             }
         }
     }

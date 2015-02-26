@@ -39,10 +39,6 @@ public class TenthFrame implements Frame {
         this.balls.add(ball);
         this.frameIndex++;
 
-        if((this.frameIndex == 0|| this.frameIndex == 1) && ball.getPins() == 10){
-            return 0;
-        }
-
         return ball.getPins();
     }
 
@@ -51,39 +47,34 @@ public class TenthFrame implements Frame {
         if(this.balls == null){
             return true;
         }
-
-
-        if(this.balls.get(0).getPins() ==10){
-            if(this.balls.get(1) != null && this.balls.get(10).getPins() == 10){
-                return true;
-            }else if(this.balls.get(1) == null){
-                return true;
-            }
+        if(this.balls.size() <= 1){
+            return true;
         }
-        if(this.balls.size() < 3 ) {
-            return false;
-        }
-        return true;
+        return this.score() >= numberPins;
     }
 
     @Override
     public boolean isStrike() {
-        if(this.balls.size() == 1) {
-            if(this.balls.get(0).getPins() == numberPins){
-                return true;
-            }
-        }
-        return false;
+        return this.balls.size() == 1 && this.balls.get(0).getPins() == numberPins;
     }
 
     @Override
     public boolean isSpare() {
-        return false;
+        return this.balls.size() == 2 && this.score() == numberPins;
     }
 
 
     @Override
     public int addBonus(int value){
-        return this.score();
+        return 0;
+    }
+
+    @Override
+    public int getBall(int ball) {
+        if(this.balls.size() >= ball) {
+            return this.balls.get(ball).getPins();
+        }else{
+            return 0;
+        }
     }
 }

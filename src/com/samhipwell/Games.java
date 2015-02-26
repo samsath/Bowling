@@ -1,7 +1,7 @@
 package com.samhipwell;
 
-/**
- * Created by sam on 23/02/15.
+/*
+ * This is the interface for the type of interaction for the user, it is so there can be a GUI interface or a command line.
  */
 public interface Games {
     boolean setup();
