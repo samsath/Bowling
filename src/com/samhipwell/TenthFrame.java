@@ -62,7 +62,7 @@ public class TenthFrame implements Frame {
         if(this.balls.size() == 3){
             return false;
         }
-        return this.score() >= numberPins;
+        return this.score() >= numberPins && this.balls.get(1).getPins() != 0;
     }
 
     @Override
@@ -96,10 +96,31 @@ public class TenthFrame implements Frame {
          /*
          * Returns the ball value if there is a ball of that type else it returns a unusable number to the other function.
          */
-        if(this.balls.size() >= ball) {
+        if(this.balls.size() > ball) {
             return this.balls.get(ball).getPins();
         }else{
+            return 9999;
+        }
+    }
+
+    @Override
+    public int pinsLeft() {
+        /*
+         * Returns different values depending on how many balls used and what the score is.
+         *  This is due to there being up to three balls and a maximum score of 30 instead of 10.
+         */
+        if(this.balls == null){
             return 0;
+        }
+        if(this.balls.size() == 1 && this.balls.get(0).getPins() < 10){
+            return this.score();
+        }else if(this.balls.size() == 1 && this.balls.get(0).getPins() == 10){
+            return 0;
+        }
+        if(this.balls.size() == 2 && this.score() >= 10){
+            return 0;
+        }else{
+            return this.score();
         }
     }
 }

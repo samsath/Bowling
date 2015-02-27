@@ -1,5 +1,8 @@
 package com.samhipwell;
 
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 
 /**
@@ -23,7 +26,7 @@ public class Bowler implements Player {
         this.name = name;
         this.numberofFrames = games;
     }
-
+    @Override
     public String getName() {
         /*
          * Returns the bowlers Name
@@ -31,10 +34,12 @@ public class Bowler implements Player {
         return name;
     }
 
+    @Override
     public String toString(){
         return "Bowler [name="+name+"]";
     }
 
+    @Override
     public Frame play(int frame){
         /*
          * Produces the certain frame for the frame so if it is not the last frame then a NormalFrame class is used, else
@@ -52,45 +57,55 @@ public class Bowler implements Player {
         return this.frames.get(frame);
     }
 
+    @Override
     public void checkPoints(){
         /*
          * This function goes through the previous frames and works out if they need any more points and if so adds them
          *  to the frame. It is separated into Strike and Spares as each one requires a different addition of points.
          */
         if(this.frames != null && this.frames.size() > 2){
-            for(int f = 0; f < this.frames.size(); f++){
-                if(this.frames.get(f).isStrike()){
-                    int ballcount = 0;
-                    int ballindex = 0;
-                    int extraframe = 1;
-                    int extrascore = 0;
-                    while(ballcount <= 1){
-                        int result = this.frames.get(f+extraframe).getBall(ballindex);
-                        if(result == -1){
-                            extraframe++;
-                            ballindex = 0;
-                        }else{
-                            extrascore += result;
-                            ballcount++;
-                            ballindex++;
+            for(int f = 0; f < this.frames.size()-1; f++){
+                    if(this.frames.get(f).isStrike()) {
+                        int ballcount = 0;
+                        int ballindex = 0;
+                        int extraframe = 1;
+                        int extrascore = 0;
+                        while (ballcount <= 1) {
+                            if(this.frames.size() > f+extraframe) {
+                                int result = this.frames.get(f + extraframe).getBall(ballindex);
+                                if (result == 9999) {
+                                    extraframe++;
+                                    ballindex = 0;
+                                } else {
+                                    extrascore += result;
+                                    ballcount++;
+                                    ballindex++;
+                                }
+                            }else{
+                                ballcount =2;
+                            }
                         }
+                        this.frames.get(f).addBonus(extrascore);
                     }
-                    this.frames.get(f).addBonus(extrascore);
-                }
+
                 if(this.frames.get(f).isSpare()){
                     int ballcount = 0;
                     int ballindex = 0;
                     int extraframe = 1;
                     int extrascore = 0;
                     while(ballcount < 1){
-                        int result = this.frames.get(f+extraframe).getBall(ballindex);
-                        if(result == -1){
-                            extraframe++;
-                            ballindex = 0;
+                        if(this.frames.size() > f+extraframe) {
+                            int result = this.frames.get(f + extraframe).getBall(ballindex);
+                            if (result == 9999) {
+                                extraframe++;
+                                ballindex = 0;
+                            } else {
+                                extrascore += result;
+                                ballcount++;
+                                ballindex++;
+                            }
                         }else{
-                            extrascore += result;
-                            ballcount++;
-                            ballindex++;
+                            ballcount =1;
                         }
                     }
                     this.frames.get(f).addBonus(extrascore);
@@ -99,18 +114,62 @@ public class Bowler implements Player {
         }
     }
 
+    @Override
     public String getScore(){
         /*
          * This function returns the bowlers score will extra point or not.
          */
         if(this.frames != null){
-            String returnValue = this.name;
+            String strVal = " ";
+            String returnScore = StringUtils.repeat(strVal, this.name.length());
             int total =0;
             for(int f =0; f<this.frames.size(); f++){
-                total += this.frames.get(f).score();
-                returnValue += " | "+this.frames.get(f).score();
+                int ballScore = this.frames.get(f).score();
+                total += ballScore;
+                int ballLength = (int)(Math.log10(ballScore)+1);
+                if(ballLength == 2){
+                    returnScore += "|  "+ballScore+"   ";
+                }else if(ballLength == 3) {
+                    returnScore += "| "+ballScore+"  ";
+                }else{
+                    returnScore += "|   "+ballScore+"   ";
+                }
             }
-            return returnValue += " | total=" + total;
+            return returnScore += "| total=" + total;
+        }else{
+            return "None";
+        }
+    }
+
+    @Override
+    public String getPoints(){
+    /*
+     * This function returns the bowlers points
+     */
+        if(this.frames != null){
+            String returnValue = this.name;
+            for(int f = 0; f<this.frames.size();f++){
+                for(int b = 0; b<3;b++){
+                    int ballv = this.frames.get(f).getBall(b);
+                    switch(ballv){
+                        case 9999:
+                            break;
+                        case 10:
+                            returnValue += "|  X    ";
+                            break;
+                        default:
+                            int ballLength = (int)(Math.log10(ballv)+1);
+                            if(ballLength == 2){
+                                returnValue += "| "+ballv;
+                            }else if(ballLength == 3) {
+                                returnValue += "|"+ballv;
+                            }else{
+                                returnValue += "|  "+ballv;
+                            }
+                    }
+                }
+            }
+            return returnValue+"|";
         }else{
             return "None";
         }

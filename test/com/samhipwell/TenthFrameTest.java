@@ -98,7 +98,15 @@ public class TenthFrameTest {
         frames.addBall(new Balls(numberPins));
         frames.addBall(new Balls(numberPins));
         frames.addBall(new Balls(numberPins));
-        assertTrue(frames.rollAgain());
+        assertFalse(frames.rollAgain());
+    }
+
+    @Test
+    public void testRollAgainWithTwoOddNumber() throws Exception {
+        Frame frames =  new TenthFrame(numberPins);
+        frames.addBall(new Balls(1));
+        frames.addBall(new Balls(2));
+        assertFalse(frames.rollAgain());
     }
 
     @Test

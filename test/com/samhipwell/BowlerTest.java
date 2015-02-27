@@ -52,7 +52,7 @@ public class BowlerTest {
             play.addBall(new Balls(2));
             play.addBall(new Balls(6));
         }
-        assertEquals("sam | 8 | 8 | total=16", buser.getScore());
+        assertEquals("   |   8   |   8   | total=16", buser.getScore());
     }
 
     @Test
@@ -66,7 +66,7 @@ public class BowlerTest {
         play2.addBall(new Balls(4));
         play2.addBall(new Balls(3));
         buser.checkPoints();
-        assertEquals("sam | 24 | 17 | 7 | total=48",buser.getScore());
+        assertEquals("   |  24   |  17   |   7   | total=48",buser.getScore());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class BowlerTest {
         play2.addBall(new Balls(4));
         play2.addBall(new Balls(3));
         buser.checkPoints();
-        assertEquals("sam | 17 | 7 | 7 | total=31",buser.getScore());
+        assertEquals("   |  17   |   7   |   7   | total=31",buser.getScore());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class BowlerTest {
         play.addBall(new Balls(10));
         play.addBall(new Balls(10));
         buser.checkPoints();
-        assertEquals("sam | 30 | 30 | 30 | 30 | 30 | 30 | 30 | 30 | 30 | 30 | total=300",buser.getScore());
+        assertEquals("   |  30   |  30   |  30   |  30   |  30   |  30   |  30   |  30   |  30   |  30   | total=300",buser.getScore());
     }
 
     @Test
@@ -112,6 +112,6 @@ public class BowlerTest {
         play.addBall(new Balls(5));
         play.addBall(new Balls(5));
         buser.checkPoints();
-        assertEquals("sam | 15 | 15 | 15 | 15 | 15 | 15 | 15 | 15 | 15 | 15 | total=150",buser.getScore());
+        assertEquals("   |  15   |  15   |  15   |  15   |  15   |  15   |  15   |  15   |  15   |  15   | total=150",buser.getScore());
     }
 }

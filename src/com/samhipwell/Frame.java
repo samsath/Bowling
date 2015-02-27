@@ -14,4 +14,5 @@ public interface Frame {
     boolean isSpare();
     int addBonus(int value);
     int getBall(int ball);
+    int pinsLeft();
 }

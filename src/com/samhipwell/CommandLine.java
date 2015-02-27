@@ -1,5 +1,7 @@
 package com.samhipwell;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -100,6 +102,9 @@ public class CommandLine implements Games{
         System.out.println("The game will be played in that order.");
 
         this.turnPlay();
+        for(int u = 0; u<this.bowler.size(); u++) {
+            this.bowler.get(u).checkPoints();
+        }
         this.printResults();
     }
 
@@ -110,7 +115,18 @@ public class CommandLine implements Games{
         if(this.bowler != null){
             System.out.println("This is your results:");
             for(int u =0; u<this.bowler.size(); u++){
-                System.out.println(this.bowler.get(u).getScore());
+                String strVal = "_";
+                String bowlerPoints = this.bowler.get(u).getPoints();
+                String bowlerScore = this.bowler.get(u).getScore();
+                String returnScore = "";
+                if(bowlerPoints.length()>bowlerScore.length()) {
+                    returnScore = StringUtils.repeat(strVal, bowlerPoints.length());
+                }else{
+                     returnScore = StringUtils.repeat(strVal, bowlerScore.length());
+                }
+                System.out.println(returnScore);
+                System.out.println(bowlerPoints);
+                System.out.println(bowlerScore);
             }
         }else{
             System.out.println("No Results");
@@ -125,12 +141,18 @@ public class CommandLine implements Games{
          */
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         for(int frame = 0; frame < numberOfGames;frame++){
-            System.out.println("Round :"+frame);
+            System.out.println("");
+            if(numberOfGames == (frame+1) ){
+                System.out.println("This is the last Round of "+(frame+1));
+            }else {
+                System.out.println("Round :" + (frame + 1));
+            }
             for(int u = 0; u<this.bowler.size(); u++){
+                System.out.println("");
                 System.out.println(this.bowler.get(u).getName()+" Your Up");
                 Frame currentFrame = this.bowler.get(u).play(frame);
                 do{
-                    int leftPins = NUMBER_OF_PINS - currentFrame.score();
+                    int leftPins = NUMBER_OF_PINS - currentFrame.pinsLeft();
                     System.out.println("You have "+leftPins+" pins left");
                     System.out.print("Ball:");
                     String ballInput;
@@ -153,9 +175,15 @@ public class CommandLine implements Games{
                     }
                     if(through != null) {
                             currentFrame.addBall(through);
+                            if(currentFrame.isStrike()){
+                                System.out.println("Strike");
+                            }
+                            if(currentFrame.isSpare()){
+                                System.out.println("Spare");
+                            }
+                            System.out.println("Round score: "+currentFrame.score());
                     }
                 }while(currentFrame.rollAgain());
-                this.bowler.get(u).checkPoints();
             }
         }
     }

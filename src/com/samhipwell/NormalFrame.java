@@ -97,10 +97,18 @@ public class NormalFrame implements Frame {
         /*
          * Returns the ball value if there is a ball of that type else it returns a unusable number to the other function.
          */
-        if(this.balls.size() >= ball+1) {
+        if(this.balls.size() > ball) {
             return this.balls.get(ball).getPins();
         }else{
-            return -1;
+            return 9999;
         }
+    }
+
+    @Override
+    public int pinsLeft() {
+        /*
+         * Returns the Score as it allows the play function to work out how many is left.
+         */
+        return this.score();
     }
 }

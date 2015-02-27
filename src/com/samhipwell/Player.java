@@ -11,4 +11,5 @@ public interface Player {
     Frame play(int frame);
     void checkPoints();
     String getScore();
+    String getPoints();
 }
