@@ -63,7 +63,7 @@ public class Bowler implements Player {
          * This function goes through the previous frames and works out if they need any more points and if so adds them
          *  to the frame. It is separated into Strike and Spares as each one requires a different addition of points.
          */
-        if(this.frames != null && this.frames.size() > 2){
+        if(this.frames != null){
             for(int f = 0; f < this.frames.size()-1; f++){
                     if(this.frames.get(f).isStrike()) {
                         int ballcount = 0;
